@@ -1,5 +1,4 @@
-#include <SimplexNoise.h>
-SimplexNoise sn;
+#include <FastLED.h>
 
 #include <Adafruit_NeoPixel.h>
 
@@ -7,62 +6,65 @@ SimplexNoise sn;
 #define PIN 6
 
 // How many NeoPixels we will be using, charge accordingly
-#define NB_PIXELS 20
+#define NB_PIXELS 60
 
 // Instatiate the NeoPixel from the ibrary
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NB_PIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
-//VAR_INTENSITY must >= to BASE_INTENSITY, a check will be added later
-#define BASE_INTENSITY 30
-#define VAR_INTENSITY 30
+#define MIN_RED 255
+#define MAX_RED 255
+
+#define MIN_VARIATION 0
+#define MAX_VARIATION 20
 
 //Value must be between 0 & 1.
 //If you never want a LED to be completly off, put 0.1 to min
-#define MIN_INTENSITY 0.1
+#define MIN_INTENSITY 0.0
 #define MAX_INTENSITY 1.0
 
 //Speed for variations, higher is slower
-#define NOISE_SPEED_COLOR 2500
-#define NOISE_SPEED_INTENSITY 1500
+#define NOISE_SPEED_COLOR 5
+#define NOISE_SPEED_INTENSITY 3
 
 double n;
-double n2;
-double n3;
+double ni;
 
 void setup() {
   strip.begin();  // initialize the strip
   strip.show();   // make sure it is visible
   strip.clear();  // Initialize all pixels to 'off'
-  strip.setBrightness(60);
-  //Serial.begin(9600);
+  //strip.setBrightness(60);
+  Serial.begin(9600);
+
 }
 
 void loop() {
   renderLEDs();
 }
 
+unsigned int lastTime = 0;
 void renderLEDs() {
 
   unsigned int time = millis();
 
+  Serial.println(1000/(time - lastTime));
+  lastTime = time;
+
   for (int i = 0; i < NB_PIXELS; i++) {
     //adjust the mult and divide to change the global effect
-    n = sn.noise(i << 3, (((float)time / (float)NOISE_SPEED_COLOR)));
-    n2 = sn.noise((float)(i >> 3), (((float)time / (float)NOISE_SPEED_COLOR)));
-    //used for variation intensity
-    n3 = sn.noise(((float)time / (float)NOISE_SPEED_INTENSITY), i);
-    n = (n + 1.0) / 2;
-    n2 = (n2 + 1.0) / 2;
+    n = inoise8(i*250 , (time+i)/NOISE_SPEED_COLOR);
+
+    ni = inoise8(i*500 , (time+i)/NOISE_SPEED_INTENSITY);
 
     //You can change the easing function here
-    float v = SineEaseOut(n * n2);
-    v = (MAX_INTENSITY - MIN_INTENSITY)*v + MIN_INTENSITY;
-    float g = (BASE_INTENSITY + (n3 * VAR_INTENSITY)) * v;
-    if (g < 0)
-      g = 0;
-    if (g > 255)
-      g = 255;
-    strip.setPixelColor(i, 255 * v , g , 0);
+    float v = QuadraticEaseInOut(n/255);
+    float vi = QuadraticEaseInOut(ni/255);
+    
+    vi = (MAX_INTENSITY - MIN_INTENSITY) * v + MIN_INTENSITY;
+    float red = vi *((MAX_RED - MIN_RED)*v + MIN_RED);
+    float variation = vi *((MAX_VARIATION - MIN_VARIATION)*v + MIN_VARIATION);
+
+    strip.setPixelColor(i, red , variation , 0);
   }
   strip.show();
 
