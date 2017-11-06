@@ -21,7 +21,7 @@ Use [this guide](https://www.arduino.cc/en/Guide/Libraries) if you don't know ho
 
 ## Deployment
 
-After downloading the code, connect your arudino board to your computer.
+After downloading the code, connect your Arduino board to your computer.
 Then use the [Arduino IDE](https://www.arduino.cc/en/main/software) to upload your code to your board.
 
 ## Contributing
@@ -36,7 +36,7 @@ See also the list of [contributors](https://github.com/CosplayEnrichmentCenter/A
 
 ## License
 
-This project is licensed under the Creative Common BY-NC-SA 3.0 License - see the [LICENSE.md](LICENSE.md) file for details or see the [official website](https://creativecommons.org/licenses/by-nc-sa/3.0/)
+This project is licensed under the Creative Common BY-NC-SA 4.0 License - see the [LICENSE.md](LICENSE.md) file for details or see the [official website](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 ## Acknowledgments
 
