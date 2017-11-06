@@ -13,41 +13,43 @@
 */
 
 #include <FastLED.h>
-#include <Adafruit_NeoPixel.h>
+
+/********BASIC SETTINGS********/
 
 // the data pin for the NeoPixels
-#define PIN 6
+#define DATA_PIN 6
 
 // How many NeoPixels we will be using, charge accordingly
-#define NB_PIXELS 60
+#define NUM_LEDS 60
 
-// Instatiate the NeoPixel from the ibrary
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(NB_PIXELS, PIN, NEO_GRB + NEO_KHZ800);
-
-#define MIN_RED 255
-#define MAX_RED 255
-
+//The variation in yellow color to create the fire effect, define the interval where the color can change.
 #define MIN_VARIATION 0
-#define MAX_VARIATION 20
+#define MAX_VARIATION 30
 
 //Value must be between 0 & 1.
 //If you never want a LED to be completly off, put 0.1 to min
-#define MIN_INTENSITY 0.0
+#define MIN_INTENSITY 0.1
 #define MAX_INTENSITY 1.0
 
 //Speed for variations, higher is slower
 #define NOISE_SPEED_COLOR 5
 #define NOISE_SPEED_INTENSITY 3
 
+/******************CODE*****************/
+/**************DO NOT TOUCH*************/
+/*********unless you really need********/
+
 double n;
 double ni;
 
+const byte RED = 255;
+
+CRGB leds[NUM_LEDS];
+
 void setup() {
-  strip.begin();  // initialize the strip
-  strip.show();   // make sure it is visible
-  strip.clear();  // Initialize all pixels to 'off'
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
   //strip.setBrightness(60);
-  Serial.begin(9600);
+  //Serial.begin(9600);
 
 }
 
@@ -60,26 +62,28 @@ void renderLEDs() {
 
   unsigned int time = millis();
 
-  Serial.println(1000/(time - lastTime));
+  //Serial.println(1000/(time - lastTime));
   lastTime = time;
 
-  for (int i = 0; i < NB_PIXELS; i++) {
+  for (int i = 0; i < NUM_LEDS; i++) {
     //adjust the mult and divide to change the global effect
+    // will be added to advanced settings later
     n = inoise8(i*250 , (time+i)/NOISE_SPEED_COLOR);
 
     ni = inoise8(i*500 , (time+i)/NOISE_SPEED_INTENSITY);
 
     //You can change the easing function here
+    //Used to avoid a linear effect and give a more natural curve.
     float v = QuadraticEaseInOut(n/255);
     float vi = QuadraticEaseInOut(ni/255);
     
     vi = (MAX_INTENSITY - MIN_INTENSITY) * v + MIN_INTENSITY;
-    float red = vi *((MAX_RED - MIN_RED)*v + MIN_RED);
-    float variation = vi *((MAX_VARIATION - MIN_VARIATION)*v + MIN_VARIATION);
+    float red = vi *(RED*v);
+    float yellow = vi *((MAX_VARIATION - MIN_VARIATION)*v + MIN_VARIATION);
 
-    strip.setPixelColor(i, red , variation , 0);
+    leds[i] = CRGB(red , yellow , 0);
   }
-  strip.show();
+  FastLED.show();
 
 }
 
