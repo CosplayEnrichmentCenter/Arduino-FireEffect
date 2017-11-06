@@ -1,6 +1,6 @@
 # Fire Effect
 
-This project is a simple code base to create a fire/lava effect with an Arduino board and a WS2812B compatible LED-strip. For example a [NeoPixel](https://www.adafruit.com/category/168)
+This project is a simple code base to create a fire/lava effect with an Arduino board and a WS2812B compatible LED-strip, for example a [NeoPixel](https://www.adafruit.com/category/168)
 
 ## Examples
 * [Diablo 3 Marauder Shoulders](https://www.facebook.com/soocosplay/videos/1954157731462912/)
