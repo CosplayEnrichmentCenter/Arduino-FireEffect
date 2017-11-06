@@ -1,5 +1,18 @@
-#include <FastLED.h>
+/*
+  Fire Effect
+  This project is a simple code base to create a fire/lava effect with an Arduino board and a WS2812B compatible LED-strip. 
+  For example a NeoPixel(https://www.adafruit.com/category/168)
+  The circuit:
+  * Arduino Board
+  * WS2812B compatible LED-strip
+  Created 27/10/2017
+  By Brice Culas - CosplayEnrichmentCenter
+  Modified 06/11/2017
+  By Brice Culas - CosplayEnrichmentCenter
+  https://github.com/CosplayEnrichmentCenter/Arduino-FireEffect
+*/
 
+#include <FastLED.h>
 #include <Adafruit_NeoPixel.h>
 
 // the data pin for the NeoPixels
