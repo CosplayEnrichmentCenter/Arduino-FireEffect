@@ -7,7 +7,8 @@ This project is a simple code base to create a fire/lava effect with an Arduino 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+To use this code, just clone the project on your computer. It can be directly uploaded to your arduino.
+But first refer to the next parts.
 
 ### Dependencies
 You will need to download [FastLED](http://fastled.io/) to use this code.
@@ -30,7 +31,7 @@ Then use the [Arduino IDE](https://www.arduino.cc/en/main/software) to upload yo
 
 ## Authors
 
-* **Brice Culas** - *Initial work* - [CosplayEnrichmentCenter](https://github.com/PurpleBooth)
+* **Brice Culas** - *Initial work* - [CosplayEnrichmentCenter](https://github.com/CosplayEnrichmentCenter)
 
 See also the list of [contributors](https://github.com/CosplayEnrichmentCenter/Arduino-FireEffect/contributors) who participated in this project.
 
